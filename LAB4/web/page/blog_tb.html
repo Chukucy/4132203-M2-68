@@ -27,7 +27,8 @@
         });
     }
 
-    $.getJSON("/php/blog_api.php",function(JSONDATA){
+    $.getJSON("/php/blog_api.php",function(jsonDATA){
+        $("#tb_blog tbody tr").remove();
 
         jsonDATA.data.forEach(element => {
             let tbRow = `
@@ -35,9 +36,10 @@
                             <td>$(element.id)</td>
                             <td>$(element.comment)</td>
                             <td></td>
-                            <td><button>DEL</button></td>
+                            <td><button onclick=delBlog(${element.id})>DEL</button></td>
                         </tr>
                         `;
+        $("#tb_blog tbody").append(tbRow);
         });//forEach
     });
 </script>

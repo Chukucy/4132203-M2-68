@@ -21,11 +21,10 @@ switch($method){
         $response = {'status'='success','data'=> $blog};
         break;
 
-
         case "DELETE":
             $data = file_get_contents("php://input");
             parse_str($data, $request_data);
-            $id = $request_data('id') ?? null;
+            $id = $request_data['id'] ?? null;
             if($id){
                 $sql = "DELETE FROM blog WHERE id = ?";
                 $stmt = $condb->prepare($sql);
@@ -39,6 +38,19 @@ switch($method){
             
         
             break;
+
+            case "POST":
+                $blog = $_POST['blog'] ?? null;
+                if ($blog) {
+                    $sql = "INSERT INTO blog (comment) VALUES (?)";
+                    $stmt = $condb->prepare($sql);
+                    $stmt->bind_param("s", $blog);
+                    if ($stmt->execute())
+                        $response = ['status' => 'success', 'message' => 'Added'];
+                    else
+                        $response = ['status' => 'error', 'message' => '$condb->error'];
+                } else
+                    $response = ['status' => 'error', 'message' => 'Blog is null'];
 }
 
 echo json_encode($method);
