@@ -1,0 +1,43 @@
+<table id="tb_blog">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Comment</th>
+            <th>Edit</th>
+            <th>Del</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Loading...</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    function delBlog(id){
+        $.ajax({
+            url:"/php/blog_api.php",
+            type:"DELETE",
+            data:{ id:id},
+            success:function(res){
+                $("#blog_msg").html(JSON.stringify(res.message));
+                $("#tb_blog").load("/page/blog_tb.html");
+            },
+        });
+    }
+
+    $.getJSON("/php/blog_api.php",function(JSONDATA){
+
+        jsonDATA.data.forEach(element => {
+            let tbRow = `
+                        <tr>
+                            <td>$(element.id)</td>
+                            <td>$(element.comment)</td>
+                            <td></td>
+                            <td><button>DEL</button></td>
+                        </tr>
+                        `;
+        });//forEach
+    });
+</script>
